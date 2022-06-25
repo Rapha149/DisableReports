@@ -38,7 +38,7 @@ public class Config {
                 """);
         comments.put("players.specificPlayers", "Only used when \"type\" is \"SPECIFIC\". The players to disable reports for." +
                                         "\nYou can state UUIDs (with dashes) or player names. UUIDs are recommended.");
-        comments.put("turnOff", "Used to turn off disabling reports for specific players.");
+        comments.put("turnOff", "Used to turn off disabling reports for specific players. This means that messages sent by these players can be reported by others.");
         comments.put("turnOff.allowChangePerCommand", """
                 Whether or not to enable the command "/disablereports off" that players can use to turn off disabling reports for themselves.
                 The permission for that command is "disablereports.off" and "disablereports.off.others". If you want all players to be able to use the command, you can use a permission plugin like LuckPerms.

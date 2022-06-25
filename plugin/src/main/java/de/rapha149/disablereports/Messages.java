@@ -32,9 +32,11 @@ public class Messages {
         messageConfig.addDefault("reload", "%prefix%&7Config and messages were reloaded.");
         messageConfig.addDefault("off.not_allowed", "%prefix%&cYou can't turn off disabling reports per command.");
         messageConfig.addDefault("off.turned_on", "%prefix%&7You have turned &aon &7disabling reports for yourself.");
-        messageConfig.addDefault("off.turned_off", "%prefix%&7You have turned &4off &7disabling reports for yourself.");
+        messageConfig.addDefault("off.turned_off", "%prefix%&7You have turned &4off &7disabling reports for yourself. " +
+                                                   "That means that messages sent by you can be reported by others.");
         messageConfig.addDefault("off.others.turned_on", "%prefix%&7You have turned &aon &7disabling reports for &6%player%&7.");
-        messageConfig.addDefault("off.others.turned_off", "%prefix%&7You have turned &4off &7disabling reports for &6%player%&7.");
+        messageConfig.addDefault("off.others.turned_off", "%prefix%&7You have turned &4off &7disabling reports for &6%player%&7. " +
+                                                          "That means that messages sent by &6%player%&7 can be reported by others.");
     }
 
     public static void loadMessages() {
