@@ -1,7 +1,9 @@
 package de.rapha149.disablereports;
 
 import de.rapha149.clearfog.version.VersionWrapper;
+import de.rapha149.disablereports.Config.WarningData;
 import de.rapha149.disablereports.Metrics.DrilldownPie;
+import de.rapha149.disablereports.Metrics.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -72,12 +74,27 @@ public final class DisableReports extends JavaPlugin {
     }
 
     private void loadMetrics() {
-        Metrics metrics = new Metrics(this, 13802);
+        Metrics metrics = new Metrics(this, 15581);
         metrics.addCustomChart(new DrilldownPie("check_for_updates", () -> {
             Map<String, Map<String, Integer>> map = new HashMap<>();
             Map<String, Integer> entry = new HashMap<>();
             entry.put(getDescription().getVersion(), 1);
             map.put(String.valueOf(Config.get().checkForUpdates), entry);
+            return map;
+        }));
+        metrics.addCustomChart(new SimplePie("players_type", () -> {
+            char[] arr = Config.get().players.type.toString().toLowerCase().toCharArray();
+            arr[0] = Character.toUpperCase(arr[0]);
+            return new String(arr);
+        }));
+        metrics.addCustomChart(new SimplePie("allow_turnoff_change_per_command", () ->
+                String.valueOf(Config.get().turnOff.allowChangePerCommand)));
+        metrics.addCustomChart(new DrilldownPie("warning", () -> {
+            WarningData data = Config.get().warning;
+            Map<String, Map<String, Integer>> map = new HashMap<>();
+            Map<String, Integer> entry = new HashMap<>();
+            entry.put(String.valueOf(data.onlyForSpecifiedPlayers), 1);
+            map.put(String.valueOf(data.enabled), entry);
             return map;
         }));
     }
