@@ -5,3 +5,32 @@ main: de.rapha149.disablereports.DisableReports
 api-version: 1.19
 description: Disables the new reports as of 1.19.1 by removing any traces of Microsoft accounts from the messages.
 website: https://github.com/Rapha149/DisableReports
+
+commands:
+  disablereports:
+    description: Manage the DisableReports plugin.
+    aliases: [dr]
+
+permissions:
+  disablereports.*:
+    children:
+      disablereports: true
+  disablereports.reload:
+    description: Permission for "/disablereports reload".
+    children:
+      disablereports: true
+  disablereports.permission:
+    description: Used if "players.type" is set to "PERMISSION" in the config.
+    children:
+      disablereports: true
+  disablereports.off:
+    description: Permission for "/disablereports off". Used if "off.allowChangePerCommand" is set to "true" in the config.
+    children:
+      disablereports: true
+  disablereports.off.*:
+    children:
+      disablereports.off: true
+  disablereports.off.others:
+    description: Permission for "/disablereports off <Player>".
+    children:
+      disablereports.off: true

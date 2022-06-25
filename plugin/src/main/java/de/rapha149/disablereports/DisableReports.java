@@ -11,11 +11,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static de.rapha149.disablereports.Messages.getMessage;
+import static de.rapha149.disablereports.Util.WRAPPER;
 
 public final class DisableReports extends JavaPlugin {
 
     private static DisableReports instance;
-    public VersionWrapper wrapper;
 
     @Override
     public void onEnable() {
@@ -23,7 +23,7 @@ public final class DisableReports extends JavaPlugin {
 
         String nmsVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].substring(1);
         try {
-            wrapper = (VersionWrapper) Class.forName(VersionWrapper.class.getPackage().getName() + ".Wrapper" + nmsVersion).getDeclaredConstructor().newInstance();
+            WRAPPER = (VersionWrapper) Class.forName(VersionWrapper.class.getPackage().getName() + ".Wrapper" + nmsVersion).getDeclaredConstructor().newInstance();
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
             throw new IllegalStateException("Failed to load support for server version \"" + nmsVersion + "\"");
         } catch (ClassNotFoundException e) {
@@ -53,6 +53,11 @@ public final class DisableReports extends JavaPlugin {
                 }
             }
         }
+
+        Bukkit.getOnlinePlayers().forEach(player -> WRAPPER.addListener(player, () -> Util.shouldDisableReports(player)));
+
+        getServer().getPluginManager().registerEvents(new Events(), this);
+        new DisableReportsCommand(getCommand("disablereports"));
 
         getLogger().info(getMessage("plugin.enable"));
     }
