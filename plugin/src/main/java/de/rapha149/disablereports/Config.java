@@ -37,7 +37,7 @@ public class Config {
                 - "SPECIFIC": Only disable reports for the specified players.
                 """);
         comments.put("players.specificPlayers", "Only used when \"type\" is \"SPECIFIC\". The players to disable reports for." +
-                                        "\nYou can state UUIDs or player names. UUIDs are recommended.");
+                                        "\nYou can state UUIDs (with dashes) or player names. UUIDs are recommended.");
         comments.put("turnOff", "Used to turn off disabling reports for specific players.");
         comments.put("turnOff.allowChangePerCommand", """
                 Whether or not to enable the command "/disablereports off" that players can use to turn off disabling reports for themselves.
@@ -45,7 +45,7 @@ public class Config {
                 If you enable this option and the warning message is enabled, it is recommended to include the command in the warning message.
                 Warning: when having this option enabled the plugin will edit the config and you will have to pay attention to that when editing the config yourself.""");
         comments.put("turnOff.players", "The players for whom disabling reports should be turned off." +
-                                        "\nYou can state UUIDs or player names. UUIDs are recommended.");
+                                        "\nYou can state UUIDs (with dashes) or player names. UUIDs are recommended.");
         comments.put("warning", """
                 Used to control whether or not a warning is sent to players on join.
                 This option exists because when players have "secure chat" enabled, it may cause problems when using this plugin.
