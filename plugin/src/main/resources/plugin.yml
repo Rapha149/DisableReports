@@ -1,0 +1,7 @@
+name: DisableReports
+author: Rapha149
+version: 1.0
+main: de.rapha149.disablereports.DisableReports
+api-version: 1.19
+description: Disables the new reports as of 1.19.1 by removing any traces of Microsoft accounts from the messages.
+website: https://github.com/Rapha149/DisableReports
