@@ -1,4 +1,4 @@
-package de.rapha149.clearfog;
+package de.rapha149.disablereports;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -827,9 +827,9 @@ public class Metrics {
     /**
      * A super simple representation of a JSON object.
      *
-     * <p>This class only exists to make methods of the {@link de.rapha149.clearfog.Metrics.JsonObjectBuilder} type-safe and not
-     * allow a raw string inputs for methods like {@link de.rapha149.clearfog.Metrics.JsonObjectBuilder#appendField(String,
-     * de.rapha149.clearfog.Metrics.JsonObjectBuilder.JsonObject)}.
+     * <p>This class only exists to make methods of the {@link JsonObjectBuilder} type-safe and not
+     * allow a raw string inputs for methods like {@link JsonObjectBuilder#appendField(String,
+     * JsonObject)}.
      */
     public static class JsonObject {
 

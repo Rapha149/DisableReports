@@ -1,4 +1,4 @@
-package de.rapha149.clearfog;
+package de.rapha149.disablereports;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -15,52 +15,40 @@ import java.util.regex.Pattern;
 
 public class Updates {
 
-    public static final String SPIGOT_URL = "https://www.spigotmc.org/resources/clearfog.98448";
-    private static final int RESOURCE_ID = 98448;
-    private static String lastResult;
-    private static long lastFetched = 0;
+    public static final String SPIGOT_URL = "https://www.spigotmc.org/resources/void-totem.99003/"; //TODO update
+    private static final int RESOURCE_ID = 99003;
 
     public static String getAvailableVersion() {
-        return getAvailableVersion(false);
-    }
+        DisableReports plugin = DisableReports.getInstance();
+        try {
+            String version;
 
-    public static String getAvailableVersion(boolean warning) {
-        if (System.currentTimeMillis() > lastFetched + 7200000) {
-            ClearFog plugin = ClearFog.getInstance();
             try {
-                String version;
-
-                try {
-                    URLConnection conn = new URL("https://api.spiget.org/v2/resources/" + RESOURCE_ID + "/versions/latest").openConnection();
-                    conn.addRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:86.0) Gecko/20100101 Firefox/86.0");
-                    conn.connect();
-                    JsonElement root = new JsonParser().parse(new InputStreamReader(conn.getInputStream()));
-                    if (root != null && root.isJsonObject())
-                        version = root.getAsJsonObject().get("name").getAsString();
-                    else
-                        throw new IllegalStateException("JsonElement is not JsonObject");
-                } catch (ConnectException e) {
-                    if (warning)
-                        plugin.getLogger().warning("Could not access https://spiget.org/, instead legacy spigot api is used to check for updates.");
-
-                    URLConnection conn = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + RESOURCE_ID).openConnection();
-                    conn.addRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:86.0) Gecko/20100101 Firefox/86.0");
-                    conn.connect();
-                    version = new BufferedReader(new InputStreamReader(conn.getInputStream())).readLine();
-                }
-
-                String result = compare(plugin.getDescription().getVersion(), version) < 0 ? version : null;
-                lastFetched = System.currentTimeMillis();
-                lastResult = result;
-                return result;
+                URLConnection conn = new URL("https://api.spiget.org/v2/resources/" + RESOURCE_ID + "/versions/latest").openConnection();
+                conn.addRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:86.0) Gecko/20100101 Firefox/86.0");
+                conn.connect();
+                JsonElement root = JsonParser.parseReader(new InputStreamReader(conn.getInputStream()));
+                if (root != null && root.isJsonObject())
+                    version = root.getAsJsonObject().get("name").getAsString();
+                else
+                    throw new IllegalStateException("JsonElement is not JsonObject");
             } catch (ConnectException e) {
-                plugin.getLogger().warning("Could not access https://spigotmc.org/ to check for updates.");
-            } catch (IOException e) {
-                e.printStackTrace();
+                plugin.getLogger().warning("Could not access https://spiget.org/, instead legacy spigot api is used to check for updates.");
+
+                URLConnection conn = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + RESOURCE_ID).openConnection();
+                conn.addRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:86.0) Gecko/20100101 Firefox/86.0");
+                conn.connect();
+                version = new BufferedReader(new InputStreamReader(conn.getInputStream())).readLine();
             }
-            return null;
-        } else
-            return lastResult;
+
+            String result = compare(plugin.getDescription().getVersion(), version) < 0 ? version : "";
+            return result;
+        } catch (ConnectException e) {
+            plugin.getLogger().warning("Could not access https://spigotmc.org/ to check for updates.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static boolean isBukkitVersionAboveOrEqualTo(String version) {

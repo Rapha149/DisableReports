@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.rapha149.clearfog</groupId>
-    <artifactId>ClearFog-parent</artifactId>
-    <version>1.5.5</version>
+    <groupId>de.rapha149.disablereports</groupId>
+    <artifactId>DisableReports-parent</artifactId>
+    <version>1.0</version>
     <packaging>pom</packaging>
 
     <modules>
