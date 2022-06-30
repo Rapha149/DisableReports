@@ -26,7 +26,8 @@ public final class DisableReports extends JavaPlugin {
         String nmsVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].substring(1);
         try {
             WRAPPER = (VersionWrapper) Class.forName(VersionWrapper.class.getPackage().getName() + ".Wrapper" + nmsVersion).getDeclaredConstructor().newInstance();
-        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException |
+                 InvocationTargetException e) {
             throw new IllegalStateException("Failed to load support for server version \"" + nmsVersion + "\"");
         } catch (ClassNotFoundException e) {
             throw new IllegalStateException("DisableReports does not fully support the server version \"" + nmsVersion + "\"");
@@ -56,7 +57,9 @@ public final class DisableReports extends JavaPlugin {
             }
         }
 
-        Bukkit.getOnlinePlayers().forEach(player -> WRAPPER.addListener(player, () -> Util.shouldDisableReports(player)));
+        Bukkit.getOnlinePlayers().forEach(player -> WRAPPER.addListener(player,
+                () -> Util.shouldDisableReports(player),
+                () -> Config.get().replaceWithSystemMessage));
 
         getServer().getPluginManager().registerEvents(new Events(), this);
         new DisableReportsCommand(getCommand("disablereports"));
@@ -82,6 +85,8 @@ public final class DisableReports extends JavaPlugin {
             map.put(String.valueOf(Config.get().checkForUpdates), entry);
             return map;
         }));
+        metrics.addCustomChart(new SimplePie("replace_with_system_message", () ->
+                String.valueOf(Config.get().replaceWithSystemMessage)));
         metrics.addCustomChart(new SimplePie("players_type", () -> {
             char[] arr = Config.get().players.type.toString().toLowerCase().toCharArray();
             arr[0] = Character.toUpperCase(arr[0]);

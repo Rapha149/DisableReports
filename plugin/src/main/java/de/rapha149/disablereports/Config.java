@@ -27,7 +27,11 @@ public class Config {
     private static Config config;
 
     static {
-        comments.put("checkForUpdates", "Whether to check for updates on enabling.");
+        comments.put("checkForUpdates", "Whether or not to check for updates on enabling.");
+        comments.put("replaceWithSystemMessage", "Whether or not to replace chat messages with normal system messages. " +
+                                                 "That means that they appear as if they were sent by the server itself." +
+                                                 "\nWhen this option is disabled the signature of the messages will still be removed, " +
+                                                 "but players may see warnings that the message signature is invalid.");
         comments.put("players", "Used to specify the players for whom reports should be disabled.");
         comments.put("players.type", """
                 How to choose the players to disable reports for. Possible values:
@@ -127,6 +131,7 @@ public class Config {
     }
 
     public boolean checkForUpdates = true;
+    public boolean replaceWithSystemMessage = true;
     public PlayersData players = new PlayersData();
     public TurnOffData turnOff = new TurnOffData();
     public WarningData warning = new WarningData();
