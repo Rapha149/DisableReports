@@ -16,6 +16,7 @@ import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import net.minecraft.network.protocol.game.PacketPlayInChat;
 import net.minecraft.network.protocol.game.ServerboundChatCommandPacket;
 import net.minecraft.util.MinecraftEncryption.b;
+import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.json.JSONArray;
@@ -25,6 +26,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -45,7 +47,7 @@ public class Wrapper1_19_R1 implements VersionWrapper {
     }
 
     @Override
-    public void addListener(Player player, Supplier<Boolean> removeSignature, Supplier<Boolean> replaceWithSystemMessage) {
+    public void addListener(Player player, Function<Player, Boolean> removeSignature, Supplier<Boolean> replaceWithSystemMessage) {
         ChannelPipeline pipeline = ((CraftPlayer) player).getHandle().b.b.m.pipeline();
         if (pipeline.names().contains(INCOMING_HANDLER_NAME))
             pipeline.remove(INCOMING_HANDLER_NAME);
@@ -58,7 +60,7 @@ public class Wrapper1_19_R1 implements VersionWrapper {
             @Override
             protected void decode(ChannelHandlerContext chc, Packet<?> obj, List<Object> out) {
                 try {
-                    if (removeSignature.get() && !replaceWithSystemMessage.get()) {
+                    if (removeSignature.apply(player)) {
                         // TODO remove debug messages
                         if (obj instanceof PacketPlayInChat packet) {
                             b signature = packet.a(player.getUniqueId()).e();
@@ -85,8 +87,10 @@ public class Wrapper1_19_R1 implements VersionWrapper {
             @Override
             public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
                 try {
-                    if (removeSignature.get() && replaceWithSystemMessage.get()) {
-                        if (msg instanceof ClientboundPlayerChatPacket packet) {
+                    if (replaceWithSystemMessage.get() && msg instanceof ClientboundPlayerChatPacket packet) {
+                        ChatSender sender = packet.f();
+                        UUID senderUuid = sender.a();
+                        if (removeSignature.apply(Bukkit.getPlayer(senderUuid))) {
                             IChatBaseComponent message = null;
                             if (ADVENTURE_FIELD != null) {
                                 try {
@@ -106,8 +110,6 @@ public class Wrapper1_19_R1 implements VersionWrapper {
                                 JSONArray with = new JSONArray();
                                 JSONObject jsonMessage = new JSONObject(ChatSerializer.a(message));
 
-                                ChatSender sender = packet.f();
-                                UUID senderUuid = sender.a();
                                 String senderName = sender.b().getString();
                                 JSONObject player = new JSONObject();
                                 player.put("text", "");

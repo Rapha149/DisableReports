@@ -15,7 +15,7 @@ public class Events implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         WRAPPER.addListener(player,
-                () -> Util.shouldDisableReports(player),
+                Util::shouldDisableReports,
                 () -> Config.get().replaceWithSystemMessage);
 
         WarningData data = Config.get().warning;

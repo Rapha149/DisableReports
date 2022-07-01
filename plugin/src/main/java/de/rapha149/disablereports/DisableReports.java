@@ -58,7 +58,7 @@ public final class DisableReports extends JavaPlugin {
         }
 
         Bukkit.getOnlinePlayers().forEach(player -> WRAPPER.addListener(player,
-                () -> Util.shouldDisableReports(player),
+                Util::shouldDisableReports,
                 () -> Config.get().replaceWithSystemMessage));
 
         getServer().getPluginManager().registerEvents(new Events(), this);
